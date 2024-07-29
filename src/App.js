@@ -1,13 +1,29 @@
 import './App.css';
-import Counter from './Counter';
-import InputCounter from './InputCounter';
-import ReducerCounter from './ReducerCounter';
+import Counter from './components/Counter';
+import CustomHooksCounter from './components/CustomHooksCounter';
+import useForceUpdate from './hooks/useForceUpdate';
+import InputCounter from './components/InputCounter';
+import PreviousStateInput from './components/PreviousStateInput';
+import ReducerCounter from './components/ReducerCounter';
 import React from 'react';
 import { useState } from "react";
+import Countries from './components/Countries';
 
 function App() {
 
   const [total, setTotal] = useState(0);
+  const forceUpdate = useForceUpdate();
+  const [name, setName] = useState("");
+
+  function refresh() {
+    forceUpdate();
+  }
+
+  function change(event) {
+    var value = event.target.value;
+    setName(value);
+  }
+
   return (
     <>
       {/* JSX code of the components returned by the component */}
@@ -22,16 +38,33 @@ function App() {
           )
         })
       }
-      <hr />
+      <br/>
+      <button onClick={refresh}>Refresh</button>
+
+      <hr style={{margin:'10px', height:'3px', backgroundColor:'gray'}}/>
       <InputCounter focus setTotal={setTotal}/> <hr />
       <InputCounter setTotal={setTotal}/> <hr />
       <InputCounter setTotal={setTotal}/> <hr />
 
       <b>Total: {total}</b>
-      <hr />
-      Reducer Counter # 1 : <ReducerCounter/>
+
       <hr style={{margin:'10px', height:'3px', backgroundColor:'gray'}}/>
+      Reducer Counter # 1 : <ReducerCounter/>
+      <hr/>
       Reducer Counter # 2 : <ReducerCounter/>
+
+      <hr style={{margin:'10px', height:'3px', backgroundColor:'gray'}}/>
+      Custom Hooks Counter #1 : <CustomHooksCounter max={5} />
+      <hr/>
+      Custom Hooks Counter #2 : <CustomHooksCounter max={10} />
+
+      <hr style={{margin:'10px', height:'3px', backgroundColor:'gray'}}/>
+      Custom Hooks Input #1 : <PreviousStateInput />
+
+      <hr style={{margin:'10px', height:'3px', backgroundColor:'gray'}}/>
+      Country: <input type='text' onChange={change}/>
+      <br/><br/>
+      <Countries name={name}/>
     </>
   );
 }
