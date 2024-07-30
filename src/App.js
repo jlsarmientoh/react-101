@@ -8,12 +8,20 @@ import ReducerCounter from './components/ReducerCounter';
 import React from 'react';
 import { useState } from "react";
 import Countries from './components/Countries';
+import Items from './components/Items';
 
 function App() {
 
   const [total, setTotal] = useState(0);
   const forceUpdate = useForceUpdate();
   const [name, setName] = useState("");
+  const [items, setItems] = useState([]);
+
+  function add() {
+    var item = "Item " + (items.length + 1);
+    items.push(item);
+    setItems([...items]);
+  }
 
   function refresh() {
     forceUpdate();
@@ -65,6 +73,10 @@ function App() {
       Country: <input type='text' onChange={change}/>
       <br/><br/>
       <Countries name={name}/>
+      <br></br>
+      <hr style={{margin:'10px', height:'3px', backgroundColor:'gray'}}/>
+      <button onClick={add}>Add Item</button>
+      <Items items={items} setItems={setItems}/>
     </>
   );
 }
