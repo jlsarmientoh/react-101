@@ -14,13 +14,16 @@ function App() {
 
   const [total, setTotal] = useState(0);
   const forceUpdate = useForceUpdate();
-  const [name, setName] = useState("");
+  const [countrName, setCountryName] = useState("");
   const [items, setItems] = useState([]);
+  const [key, setKey] = useState(1);
 
   function add() {
-    var item = "Item " + (items.length + 1);
-    items.push(item);
+    var name = "Item " + key;
+    setKey(key + 1);
+    items.push({name, key});
     setItems([...items]);
+    console.log(items);
   }
 
   function refresh() {
@@ -29,7 +32,7 @@ function App() {
 
   function change(event) {
     var value = event.target.value;
-    setName(value);
+    setCountryName(value);
   }
 
   return (
@@ -72,7 +75,7 @@ function App() {
       <hr style={{margin:'10px', height:'3px', backgroundColor:'gray'}}/>
       Country: <input type='text' onChange={change}/>
       <br/><br/>
-      <Countries name={name}/>
+      <Countries name={countrName}/>
       <br></br>
       <hr style={{margin:'10px', height:'3px', backgroundColor:'gray'}}/>
       <button onClick={add}>Add Item</button>

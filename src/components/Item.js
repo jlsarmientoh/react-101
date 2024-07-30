@@ -1,15 +1,22 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function Item({name, index, setItems}) {
   const [modifyOn, setMofifyOn] = useState(false);
   const [text, setText] = useState(name);
+  const refInput = useRef();
+
+  useEffect(function() {
+    //If the input field exists, give it focues
+    if(refInput.current) refInput.current.focus();
+  })
 
   function remove() {
     setItems(function(items) {
-      items = items.filter(function(item, i) {
-        if (index == i) return false;
-        else return true;
+      items = items.filter(function(item) {
+        if (index === item.key) return false; //Remove
+        else return true; // Keep
       });
+      console.log(items);
 
       return [...items];
     });
@@ -20,7 +27,7 @@ function Item({name, index, setItems}) {
   }
 
   function change(event) {
-    console.log(event.target.value);
+    //console.log(event.target.value);
     setText(event.target.value);
   }
 
@@ -29,7 +36,13 @@ function Item({name, index, setItems}) {
     setMofifyOn(false);
     //Modify the item in items variable
     setItems(function(items) {
-      items[index] = event.target.value;
+      items = items.map(function(item) {
+        //Modification of the item where index = item.key
+        if(index === item.key) item.name = event.target.value;
+
+        return item;
+      });
+      console.log(items);
       return [...items];
     });
   }
@@ -37,7 +50,7 @@ function Item({name, index, setItems}) {
   return (
     <li style={{ marginTop: "5px" }}>
       {
-        modifyOn ? <input type="text" value={text} onChange={change} onBlur={blur}/> : <span>{text}</span>
+        modifyOn ? <input type="text" value={text} onChange={change} onBlur={blur} ref={refInput}/> : <span>{text}</span>
       }
       &nbsp;
       <button onClick={modify}>Modify</button>

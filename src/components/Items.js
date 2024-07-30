@@ -4,8 +4,9 @@ function Items({items, setItems}) {
   return (
     <ul style={{ listStyle: "none" }}>
       {
-        items.map(function(item, index) {
-          return <Item key={index} name={item} index={index} setItems={setItems}/>;
+        items.map(function(item) {
+          var {name, key} = item;
+          return <Item key={key} name={name} index={key} setItems={setItems}/>;
         })
       }
     </ul>
